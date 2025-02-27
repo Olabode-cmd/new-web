@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Hero from "/hero-olabode.JPG?url";
 import CountUp from 'react-countup';
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+import GetInTouchSection from './components/getintouch';
 
 // IMAGES
 import DFI from './assets/images/brands/dfi.png'
@@ -16,9 +21,13 @@ const PortfolioCard = ({ item }) => {
   const { title, link, image, description, stacks } = item;
 
   return (
-    <div className="group overflow-hidden rounded-xl">
+    <div className="group overflow-hidden rounded-xl" data-aos="fade-up">
       {/* Image Container */}
-      <a href={link} className="relative h-64 md:h-80 overflow-hidden rounded-xl inline-block">
+      <a
+        href={link}
+        target="_blank"
+        className="relative h-64 md:h-80 overflow-hidden rounded-xl inline-block"
+      >
         <img
           src={image}
           alt={title}
@@ -32,19 +41,20 @@ const PortfolioCard = ({ item }) => {
 
       {/* Content */}
       <div className="mt-4">
-
         {/* Title with arrow */}
         <div className="flex items-center mb-2">
           <h3 className="text-2xl font-bold">
-            <a href={link} target='_blank' className="hover:text-purple-400 transition-colors">
+            <a
+              href={link}
+              target="_blank"
+              className="hover:text-purple-400 transition-colors"
+            >
               {title}
             </a>
           </h3>
         </div>
 
-        <p className="mt-4 text-gray-400">
-          {description}
-        </p>
+        <p className="mt-4 text-gray-400">{description}</p>
 
         {/* Stacks used - displayed as chips/tags */}
         <div className="flex flex-wrap gap-2 mt-3">
@@ -77,48 +87,92 @@ function App() {
       title: "Abinci",
       link: "https://abinci.co",
       image: Abinci,
-      description: "Abinci is a food delivery platform with users, vendors, and riders all on the app.",
+      description:
+        "Abinci is a food delivery platform with users, vendors, and riders all on the app.",
       stacks: ["React", "Typescript", "TailwindCSS"],
     },
     {
       id: 3,
-      title: "Fluid Dynamics",
-      link: "https://example.com/project3",
-      image: "/api/placeholder/600/500",
-      description: "Exploring liquid motion and dynamic color interactions.",
-      categories: ["ANIMATION", "DESIGN", "EXPERIMENTAL"],
-      stacks: ["TouchDesigner", "WebGL", "Processing"],
+      title: "WigsCastle",
+      link: "https://wigscastle.netlify.app/",
+      image: Wigscastle,
+      description: "A simple website design for a wig merchandise brand.",
+      stacks: ["HTML5", "Bootstrap", "jQuery"],
     },
     {
       id: 4,
-      title: "Neon Particles",
-      link: "https://example.com/project4",
-      image: "/api/placeholder/600/500",
+      title: "FreshMclean",
+      link: "https://www.freshmclean.com/",
+      image: FreshMclean,
       description:
-        "Particle system visualization with vibrant neon aesthetics.",
-      categories: ["DIGITAL", "INTERACTIVE", "GENERATIVE"],
-      stacks: ["Three.js", "GLSL", "JavaScript"],
+        "FreshMclean is a booking platform for users who need cleaning services. Cleaners can also register.",
+      stacks: ["React", "TailwindCSS"],
     },
     {
       id: 5,
-      title: "Geometric Harmony",
-      link: "https://example.com/project5",
-      image: "/api/placeholder/600/500",
-      description: "Mathematical precision meets artistic composition.",
-      categories: ["DESIGN", "GEOMETRY", "MINIMAL"],
-      stacks: ["Figma", "SVG", "React"],
+      title: "Finaflex",
+      link: "https://finaflex.netlify.app/",
+      image: Finaflex,
+      description:
+        "Finaflex is a collboration tool for business that offer a range of features.",
+      stacks: ["HTML5", "TailwindCSS"],
     },
     {
       id: 6,
-      title: "Wave Formations",
-      link: "https://example.com/project6",
-      image: "/api/placeholder/600/500",
-      description: "Audio-reactive wave patterns with organic movement.",
-      categories: ["AUDIO", "VISUALIZATION", "MOTION"],
-      stacks: ["Max/MSP", "Ableton Live", "Processing"],
+      title: "EyeKandy",
+      link: "https://eyekandyng.com/",
+      image: Eyekandy,
+      description:
+        "Eyekandy is a clinic and this website allows users to book appointments online.",
+      stacks: ["HTML5", "Bootstrap", "PHP"],
+    },
+    {
+      id: 7,
+      title: "Tita",
+      link: "https://titabuild.netlify.app/",
+      image: Tita,
+      description:
+        "Tita is a payment solutions platform for businesses and they offer a few more features.",
+      stacks: ["HTML5", "Bootstrap", "jQuery"],
+    },
+    {
+      id: 8,
+      title: "Foodpreneur Hub",
+      link: "https://foodpreneur.netlify.app/",
+      image: Foodpreneur,
+      description: "Foodpreneur Hub is a culinary courses platform for people who want to learn.",
+      stacks: ["HTML5", "Bootstrap", "Javascript"],
     },
   ];
 
+  const [isHovering, setIsHovering] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const textRef = useRef(null);
+
+  // Track mouse position when hovering over the text
+  const handleMouseMove = (e) => {
+    if (textRef.current) {
+      const rect = textRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    }
+  };
+
+  // Show/hide the hover image
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
+  // Animate on scroll
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
 
   return (
     <div className="bg-black">
@@ -140,16 +194,40 @@ function App() {
         {/* Main Content */}
         <div className="container mx-auto px-4 py-8">
           {/* Name with outline effect */}
-          <div className="text-center my-16">
+          <div className="text-center relative my-16">
             <h1
-              className="text-5xl md:text-7xl lg:text-9xl font-bold text-transparent"
+              data-aos="zoom-in"
+              data-aos-delay="400"
+              className="text-5xl md:text-7xl lg:text-9xl font-bold text-transparent cursor-pointer"
               style={{
                 WebkitTextStroke: "2px white",
                 textShadow: "none",
               }}
+              ref={textRef}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
             >
               Balogun Olabode
             </h1>
+
+            {isHovering && (
+              <div
+                className="absolute z-20 pointer-events-none transition-opacity duration-300 hidden md:inline-block"
+                style={{
+                  left: `${mousePosition.x - 128}px`,
+                  top: `${mousePosition.y - 128}px`,
+                  transform: "translate(-10%, -90%)",
+                  opacity: isHovering ? 1 : 0,
+                }}
+              >
+                <img
+                  src={Hero}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full"
+                />
+              </div>
+            )}
 
             <h3 className="mt-3 text-lg">Frontend Engineer.</h3>
           </div>
@@ -157,7 +235,7 @@ function App() {
           {/* Content Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             {/* Left Side Info */}
-            <div className="space-y-8">
+            <div data-aos="fade-up" className="space-y-8">
               <div>
                 <h2 className="text-lg font-bold mb-2">BIO</h2>
                 <p className="text-gray-400">
@@ -252,9 +330,13 @@ function App() {
             </div>
 
             {/* Right Side with Profile Image and Stats */}
-            <div className="flex flex-col items-center md:items-end space-y-8">
+            <div
+              data-aos="fade-up"
+              data-aos-delay="200"
+              className="flex flex-col md:items-end space-y-8"
+            >
               {/* Stats */}
-              <div className="text-right space-y-6">
+              <div className="md:text-right space-y-6 mt-3 md:mt-0">
                 <div>
                   <h2 className="text-lg font-bold mb-2">PROJECTS DONE</h2>
                   <p className="text-5xl text-gray-400 font-medium">
@@ -281,22 +363,34 @@ function App() {
                 </div>
               </div>
             </div>
+
+            <div className="block md:hidden">
+              <img src={Hero} alt="hero" className="w-full" />
+            </div>
           </div>
         </div>
+      </div>
 
+      <div className="max-w-5xl mx-auto pt-8 pb-16">
         {/* Portfolio */}
-        <div>
-          <div className="text-center mt-20 md:mt-32 mb-6">
-            <h3 className="text-3xl md:text-5xl font-medium mb-2">Past Projects</h3>
-            <p className="text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, perferendis.</p>
+        <div className="px-3 md:px-0">
+          <div data-aos="fade-up" className="text-center mt-20 md:mt-32 mb-6">
+            <h3 className="text-3xl text-white md:text-5xl font-medium mb-2">
+              Past Projects
+            </h3>
+            <p className="text-gray-400">
+              Showcasing My Best Work: A Glimpse into My Frontend Creations
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 text-white">
             {portfolioItems.map((item) => (
               <PortfolioCard key={item.id} item={item} />
             ))}
           </div>
         </div>
       </div>
+
+      <GetInTouchSection />
     </div>
   );
 }
