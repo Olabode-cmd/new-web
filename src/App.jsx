@@ -1,6 +1,124 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
+import Hero from "/hero-olabode.JPG?url";
+import CountUp from 'react-countup';
+
+// IMAGES
+import DFI from './assets/images/brands/dfi.png'
+import Abinci from './assets/images/brands/abinci.jpeg'
+import Eyekandy from './assets/images/brands/eyekandy.png'
+import Finaflex from './assets/images/brands/finaflex.png'
+import Foodpreneur from './assets/images/brands/foodpreneur.png'
+import FreshMclean from './assets/images/brands/freshmclean.png'
+import Tita from './assets/images/brands/tita.png'
+import Wigscastle from './assets/images/brands/wigscastle.png'
+
+const PortfolioCard = ({ item }) => {
+  const { title, link, image, description, stacks } = item;
+
+  return (
+    <div className="group overflow-hidden rounded-xl">
+      {/* Image Container */}
+      <a href={link} className="relative h-64 md:h-80 overflow-hidden rounded-xl inline-block">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {/* Optional hover content */}
+        </div>
+      </a>
+
+      {/* Content */}
+      <div className="mt-4">
+
+        {/* Title with arrow */}
+        <div className="flex items-center mb-2">
+          <h3 className="text-2xl font-bold">
+            <a href={link} target='_blank' className="hover:text-purple-400 transition-colors">
+              {title}
+            </a>
+          </h3>
+        </div>
+
+        <p className="mt-4 text-gray-400">
+          {description}
+        </p>
+
+        {/* Stacks used - displayed as chips/tags */}
+        <div className="flex flex-wrap gap-2 mt-3">
+          {stacks.map((stack, index) => (
+            <span
+              key={index}
+              className="inline-block bg-gray-800 rounded-full px-3 py-1 text-xs text-gray-300"
+            >
+              {stack}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function App() {
+  const portfolioItems = [
+    {
+      id: 1,
+      title: "Digital Fortress Institute",
+      link: "https://dfi-bode-dev.vercel.app/",
+      image: DFI,
+      description: "The official landing page of Digital Fortress Institute.",
+      stacks: ["React", "TailwindCSS"],
+    },
+    {
+      id: 2,
+      title: "Abinci",
+      link: "https://abinci.co",
+      image: Abinci,
+      description: "Abinci is a food delivery platform with users, vendors, and riders all on the app.",
+      stacks: ["React", "Typescript", "TailwindCSS"],
+    },
+    {
+      id: 3,
+      title: "Fluid Dynamics",
+      link: "https://example.com/project3",
+      image: "/api/placeholder/600/500",
+      description: "Exploring liquid motion and dynamic color interactions.",
+      categories: ["ANIMATION", "DESIGN", "EXPERIMENTAL"],
+      stacks: ["TouchDesigner", "WebGL", "Processing"],
+    },
+    {
+      id: 4,
+      title: "Neon Particles",
+      link: "https://example.com/project4",
+      image: "/api/placeholder/600/500",
+      description:
+        "Particle system visualization with vibrant neon aesthetics.",
+      categories: ["DIGITAL", "INTERACTIVE", "GENERATIVE"],
+      stacks: ["Three.js", "GLSL", "JavaScript"],
+    },
+    {
+      id: 5,
+      title: "Geometric Harmony",
+      link: "https://example.com/project5",
+      image: "/api/placeholder/600/500",
+      description: "Mathematical precision meets artistic composition.",
+      categories: ["DESIGN", "GEOMETRY", "MINIMAL"],
+      stacks: ["Figma", "SVG", "React"],
+    },
+    {
+      id: 6,
+      title: "Wave Formations",
+      link: "https://example.com/project6",
+      image: "/api/placeholder/600/500",
+      description: "Audio-reactive wave patterns with organic movement.",
+      categories: ["AUDIO", "VISUALIZATION", "MOTION"],
+      stacks: ["Max/MSP", "Ableton Live", "Processing"],
+    },
+  ];
+
 
   return (
     <div className="bg-black">
@@ -33,7 +151,7 @@ function App() {
               Balogun Olabode
             </h1>
 
-            <h3 className="mt-3 text-lg">First of His Name.</h3>
+            <h3 className="mt-3 text-lg">Frontend Engineer.</h3>
           </div>
 
           {/* Content Grid */}
@@ -41,7 +159,7 @@ function App() {
             {/* Left Side Info */}
             <div className="space-y-8">
               <div>
-                <h2 className="text-xl font-bold mb-2">BIO</h2>
+                <h2 className="text-lg font-bold mb-2">BIO</h2>
                 <p className="text-gray-400">
                   Senior web frontend engineer with 5+ years of experience.
                   React native developer.
@@ -49,14 +167,15 @@ function App() {
               </div>
 
               <div>
-                <h2 className="text-xl font-bold mb-2">SKILLS</h2>
+                <h2 className="text-lg font-bold mb-2">SKILLS</h2>
                 <p className="text-gray-400">
-                  React • Typescript • Next.js • Tailwind CSS • React Native
+                  React • Typescript • Next.js • Tailwind CSS • React Native •
+                  SCSS
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl font-bold mb-2">CONNECT</h2>
+                <h2 className="text-lg font-bold mb-2">CONNECT</h2>
                 <div className="flex space-x-2">
                   {/* GitHub */}
                   <a
@@ -124,11 +243,12 @@ function App() {
             </div>
 
             {/* Center Profile Image */}
-            <div className="relative w-64 h-64 hidden md:inline-block">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 opacity-50"></div>
-              <div className="absolute inset-0 rounded-full overflow-hidden">
-                <div className="w-full h-full bg-blue-900"></div>
-              </div>
+            <div className="relative hidden md:inline-block">
+              <img
+                src={Hero}
+                alt="hero"
+                className="w-64 h-64 mx-auto rounded-full"
+              />
             </div>
 
             {/* Right Side with Profile Image and Stats */}
@@ -136,23 +256,44 @@ function App() {
               {/* Stats */}
               <div className="text-right space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold mb-2">PROJECTS DONE</h2>
-                  <p className="text-6xl font-bold">10+</p>
+                  <h2 className="text-lg font-bold mb-2">PROJECTS DONE</h2>
+                  <p className="text-5xl text-gray-400 font-medium">
+                    <CountUp start={0} end={10} loop />+
+                  </p>
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-bold mb-2">
+                  <h2 className="text-lg font-bold mb-2">
                     YEARS OF EXPERIENCE
                   </h2>
-                  <p className="text-6xl font-bold">5+</p>
+                  <p className="text-5xl text-gray-400 font-medium">
+                    <CountUp start={0} end={5} />+
+                  </p>
                 </div>
 
                 <div>
-                  <h2 className="text-xl font-bold mb-2">HACKATHONS WON/PARTICIPATED</h2>
-                  <p className="text-6xl font-bold">06</p>
+                  <h2 className="text-lg font-bold mb-2">
+                    HACKATHONS WON/PARTICIPATED
+                  </h2>
+                  <p className="text-5xl text-gray-400 font-medium">
+                    <CountUp start={0} end={0o6} />
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Portfolio */}
+        <div>
+          <div className="text-center mt-20 md:mt-32 mb-6">
+            <h3 className="text-3xl md:text-5xl font-medium mb-2">Past Projects</h3>
+            <p className="text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, perferendis.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+            {portfolioItems.map((item) => (
+              <PortfolioCard key={item.id} item={item} />
+            ))}
           </div>
         </div>
       </div>
